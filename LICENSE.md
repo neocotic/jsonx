@@ -1,4 +1,4 @@
-jsonX, JavaScript library to support XML to JSON transformations and vice versa  
+jsonx, JavaScript library to support HTML/XML to JSON transformations and vice versa  
 Copyright (C) 2011 Alasdair Mercer
 
 This program is free software: you can redistribute it and/or modify  
