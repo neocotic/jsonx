@@ -1,50 +1,32 @@
+/*!
+ * JSONX v1.0.0
+ * http://forchoon.com/projects/javascript/jsonx/
+ *
+ * Copyright 2011, Alasdair Mercer
+ * Licensed under the GPL Version 3 license.
+ *
+ * Some parts are based on jQuery JavaScript Library v1.6.2
+ * http://jquery.com/
+ *
+ * Copyright 2011, John Resig
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ * Copyright 2010, tz@execpc.com
+ * Released under the GPL Version 3 license.
+ */
+
+/*jslint
+    browser: true, sloppy: true, vars: true, forin: true, plusplus: true,
+    maxerr: 50, indent: 4
+*/
+
 /**
- * Structure:
- * 
- * element
- *   = '[' tag-name ',' attributes ',' element-list ']'
- *   | '[' tag-name ',' attributes ']'
- *   | '[' tag-name ',' element-list ']'
- *   | '[' tag-name ']'
- *   | string
- *   ;
- * tag-name
- *   = string
- *   ;
- * attributes
- *   = '{' attribute-list '}'
- *   | '{' '}'
- *   ;
- * attribute-list
- *   = attribute ',' attribute-list
- *   | attribute
- *   ;
- * attribute
- *   = attribute-name ':' attribute-value
- *   ;
- * attribute-name
- *   = string
- *   ;
- * attribute-value
- *   = string
- *   | number
- *   | 'true'
- *   | 'false'
- *   | 'null'
- *   ;
- * element-list
- *   = element ',' element-list
- *   | element
- *   ;
- * 
- * Usage:
- * 
- * (Node[]) JSONX.build(String|Array);
- * (Array) JSONX.parse(String|Node|Node[]|NodeList);
- * (String) JSONX.stringify(Array|Node|Node[]|NodeList);
- * 
+ * <p>Pure JavaScript library to support XML to JSON transformations and vice
+ * versa.</p>
  * @author <a href="http://github.com/neocotic">Alasdair Mercer</a>
- * @namespace TODO
+ * @version 1.0.0
+ * @requires JSON
+ * @namespace
  */
 var JSONX = JSONX || {};
 (function (window, undefined) {
@@ -54,7 +36,8 @@ var JSONX = JSONX || {};
         rfocusable = /^(?:button|input|object|select|textarea)$/i,
         rinvalidChar = /\:|^on/,
         rtype = /^(?:button|input)$/i,
-        boolHook, formHook,
+        boolHook,
+        formHook,
         helper = {
             attr: function (ele, notXml, name, value) {
                 var hooks, ret;
@@ -66,20 +49,24 @@ var JSONX = JSONX || {};
                 if (!hooks) {
                     if (rboolean.test(name)) {
                         hooks = boolHook;
-                    } else if (formHook && name !== 'className' && (helper.nodeName(ele, 'form') || rinvalidChar.test(name))) {
+                    } else if (formHook && name !== 'className' &&
+                            (helper.nodeName(ele, 'form') ||
+                            rinvalidChar.test(name))) {
                         hooks = formHook;
                     }
                 }
                 if (value !== undefined) {
                     if (value === null) {
                         return undefined;
-                    } else if (hooks && 'set' in hooks && notXml && (ret = hooks.set(ele, value, name)) !== undefined) {
+                    } else if (hooks && 'set' in hooks && notXml &&
+                            (ret = hooks.set(ele, value, name)) !== undefined) {
                         return ret;
                     } else {
                         ele.setAttribute(name, '' + value);
                         return value;
                     }
-                } else if (hooks && 'get' in hooks && notXml && (ret = hooks.get(ele, name)) !== null) {
+                } else if (hooks && 'get' in hooks && notXml &&
+                        (ret = hooks.get(ele, name)) !== null) {
                     return ret;
                 } else {
                     ret = ele.getAttribute(name);
@@ -87,7 +74,9 @@ var JSONX = JSONX || {};
                 }
             },
             attributes: function (ele, map) {
-                var i = 0, name, notXml = ele.nodeType !== 1 || !helper.isXml(ele);
+                var i = 0,
+                    name,
+                    notXml = ele.nodeType !== 1 || !helper.isXml(ele);
                 if (map === undefined) {
                     map = {};
                     if (ele.attributes.length > 0) {
@@ -113,7 +102,8 @@ var JSONX = JSONX || {};
                         var attrNode = ele.getAttributeNode('tabIndex'), ret;
                         if (attrNode && attrNode.specified) {
                             ret = parseInt(attrNode.value, 10);
-                        } else if (rfocusable.test(ele.nodeName) || rclickable.test(ele.nodeName) && ele.href) {
+                        } else if (rfocusable.test(ele.nodeName) ||
+                                rclickable.test(ele.nodeName) && ele.href) {
                             ret = 0;
                         }
                         return ret;
@@ -124,7 +114,9 @@ var JSONX = JSONX || {};
                         var val;
                         if (rtype.test(ele.nodeName) && ele.parentNode) {
                             throw new Error('Can\'t change attribute: type');
-                        } else if (!helper.support.radioValue && value === 'radio' && helper.nodeName(ele, 'input')) {
+                        } else if (!helper.support.radioValue &&
+                                value === 'radio' &&
+                                helper.nodeName(ele, 'input')) {
                             val = ele.value;
                             ele.setAttribute('type', value);
                             if (val) {
@@ -162,21 +154,22 @@ var JSONX = JSONX || {};
                     delimiter = ' ';
                 }
                 switch (helper.type(obj)) {
-                    case 'string':
-                        obj = obj.split(delimiter);
-                    case 'array':
-                        for (name in obj) {
-                            if (callback.call(obj[name], name, obj[name]) === false) {
-                                break;
-                            }
+                case 'string':
+                    obj = obj.split(delimiter);
+                case 'array':
+                    for (name in obj) {
+                        if (callback.call(obj[name], name,
+                                obj[name]) === false) {
+                            break;
                         }
-                        break;
-                    case 'object':
-                        for (; i < obj.length;) {
-                            if (callback.call(obj[i], i, obj[i++]) === false) {
-                                break;
-                            }
+                    }
+                    break;
+                case 'object':
+                    for (; i < obj.length;) {
+                        if (callback.call(obj[i], i, obj[i++]) === false) {
+                            break;
                         }
+                    }
                 }
                 return obj;
             },
@@ -192,12 +185,13 @@ var JSONX = JSONX || {};
             },
             isPlainObject: function (obj) {
                 var key;
-                if (!obj || helper.type(obj) !== 'object' || obj.nodeType || helper.isWindow(obj)) {
+                if (!obj || helper.type(obj) !== 'object' || obj.nodeType ||
+                        helper.isWindow(obj)) {
                     return false;
                 }
                 if (obj.constructor &&
-                    !Object.prototype.hasOwnProperty.call(obj, 'constructor') &&
-                    !Object.prototype.hasOwnProperty.call(obj.constructor.prototype, 'isPrototypeOf')) {
+                        !Object.prototype.hasOwnProperty.call(obj, 'constructor') &&
+                        !Object.prototype.hasOwnProperty.call(obj.constructor.prototype, 'isPrototypeOf')) {
                     return false;
                 }
                 for (key in obj) {
@@ -212,10 +206,12 @@ var JSONX = JSONX || {};
                 return ele ? ele.nodeName.toLowerCase() !== 'html' : false;
             },
             makeArray: function (array) {
-                var ret = [];
+                var ret = [], type;
                 if (array !== null) {
-                    var type = helper.type(array);
-                    if (array.length === null || type === 'string' || type === 'function' || type === 'regexp' || helper.isWindow(array)) {
+                    type = helper.type(array);
+                    if (array.length === null || type === 'string' ||
+                            type === 'function' || type === 'regexp' ||
+                            helper.isWindow(array)) {
                         Array.prototype.push.call(ret, array);
                     } else {
                         helper.merge(ret, array);
@@ -245,13 +241,15 @@ var JSONX = JSONX || {};
                 name = notXml && helper.propFix[name] || name;
                 hooks = helper.propHooks[name];
                 if (value !== undefined) {
-                    if (hooks && 'set' in hooks && (ret = hooks.set(ele, value, name)) !== undefined) {
+                    if (hooks && 'set' in hooks &&
+                            (ret = hooks.set(ele, value, name)) !== undefined) {
                         return ret;
                     } else {
                         return (ele[name] = value);
                     }
                 } else {
-                    if (hooks && 'get' in hooks && (ret = hooks.get(ele, name)) !== undefined) {
+                    if (hooks && 'get' in hooks &&
+                            (ret = hooks.get(ele, name)) !== undefined) {
                         return ret;
                     } else {
                         return ele[name];
@@ -291,7 +289,7 @@ var JSONX = JSONX || {};
                 input.setAttribute('type', 'radio');
                 support.radioValue = input.value === 't';
                 return support;
-            })(),
+            }()),
             type: function (obj) {
                 if (obj === null) {
                     return String(obj);
@@ -299,9 +297,10 @@ var JSONX = JSONX || {};
                 return helper.classToType[Object.prototype.toString.call(obj)] || 'object';
             }
         };
-    helper.each('Boolean Number String Function Array Date RegExp Object', function (i, name) {
-        helper.classToType['[object ' + name + ']'] = name.toLowerCase();
-    });
+    helper.each('Boolean Number String Function Array Date RegExp Object',
+        function (i, name) {
+            helper.classToType['[object ' + name + ']'] = name.toLowerCase();
+        });
     boolHook = {
         get: function (ele, name) {
             return helper.prop(ele, name) ? name.toLowerCase() : undefined;
@@ -376,9 +375,16 @@ var JSONX = JSONX || {};
     }
     if (helper.type(JSONX.build) !== 'function') {
         /**
-         * <p></p>
-         * @param {String|Array} value
-         * @returns {Node[]}
+         * <p>Builds XML based on the JSON provided.</p>
+         * <p>If the argument is a string it is parsed in to JSON before being
+         * processed.</p>
+         * <p>XML is built in the same hierarchy in which it is defined in the
+         * JSON structure and all attributes are transferred.</p>
+         * @param {Object[]|String} value The JSON to be used for building the
+         * XML or a string representation of it.
+         * @returns {Node[]} The array of nodes generated based on the JSON
+         * provided. This can be an empty array but should never be
+         * <code>null</code>.
          */
         JSONX.build = function (value) {
             if (value === undefined) {
@@ -415,14 +421,23 @@ var JSONX = JSONX || {};
             if (!helper.isArray(value)) {
                 throw new TypeError('JSONX.build');
             }
-            return helper.contents(convertJsonx(value, document.createElement('x')));
+            return helper.contents(convertJsonx(value,
+                    document.createElement('x')));
         };
     }
     if (helper.type(JSONX.parse) !== 'function') {
         /**
-         * <p></p>
-         * @param {String|Node|Nodes[]|NodeList} value
-         * @returns {Array}
+         * <p>Parses the object provided in to JSON.</p>
+         * <p>If the argument is a string it is parsed in to JSON. This
+         * basically acts as a shortcut method to <code>JSON.parse</code> in
+         * this case.</p>
+         * <p>JSON is built in the same hierarchy in which it is defined in the
+         * XML structure and all attributes are transferred.</p>
+         * @param {Node|Node[]|NodeList|String} value The node(s) to be parsed
+         * in to JSON or a string to be JSONified.
+         * @returns {Object[]} The JSON array created from parsing the XML or
+         * string input. This may not be an array if a string argument was
+         * provided that did not represent an array.
          */
         JSONX.parse = function (value) {
             if (value === undefined) {
@@ -434,16 +449,18 @@ var JSONX = JSONX || {};
                     obj = array[i];
                     contents = helper.contents(obj);
                     Array.prototype.push.call(ret, obj.nodeName.toLowerCase());
-                    attrs = helper.attributes(ele);
+                    attrs = helper.attributes(obj);
                     if (!helper.isEmptyObject(attrs)) {
                         Array.prototype.push.call(ret, attrs);
                     }
                     if (contents.length) {
                         for (j = 0; j < contents.length; j++) {
                             if (contents[j].nodeType === 3) {
-                                Array.prototype.push.call(ret, contents[j].textContent);
+                                Array.prototype.push.call(ret,
+                                        contents[j].textContent);
                             } else {
-                                Array.prototype.push.call(ret, convertNodes([contents[j]]));
+                                Array.prototype.push.call(ret,
+                                        convertNodes([contents[j]]));
                             }
                         }
                     }
@@ -451,33 +468,38 @@ var JSONX = JSONX || {};
                 return ret;
             }
             switch (helper.type(value)) {
-                case 'string':
-                    return JSON.parse(value);
-                case 'array':
-                    return convertNodes(value);
-                case 'object':
-                    if (helper.type(value.nodeType) === 'number') {
-                        return convertNodes([value]);
-                    }
-                    if (helper.type(value.length) === 'number') {
-                        return convertNodes(helper.makeArray(value));
-                    }
+            case 'string':
+                return JSON.parse(value);
+            case 'array':
+                return convertNodes(value);
+            case 'object':
+                if (helper.type(value.nodeType) === 'number') {
+                    return convertNodes([value]);
+                }
+                if (helper.type(value.length) === 'number') {
+                    return convertNodes(helper.makeArray(value));
+                }
             }
             throw new TypeError('JSONX.parse');
         };
     }
     if (helper.type(JSONX.stringify) !== 'function') {
         /**
-         * <p></p>
-         * @param {Array|Node|Node[]|NodeList} value
-         * @returns {String}
+         * <p>Transforms the XML or JSON provided in to a string
+         * representation of themselves.</p>
+         * <p>If the argument is XML then it is parsed in to JSON before being
+         * transformed in to a string.</p>
+         * @param {Node|Node[]|NodeList|Object[]} value The XML or JSON to be
+         * transformed in to a string.
+         * @returns {String} The string representation of the input provided.
          */
         JSONX.stringify = function (value) {
             var type = helper.type(value);
             if (value === undefined) {
                 return undefined;
             }
-            if ((type === 'array' && value.length > 0 && value[0].nodeType) || type === 'object') {
+            if ((type === 'array' && value.length > 0 && value[0].nodeType) ||
+                    type === 'object') {
                 value = JSONX.parse(value);
             }
             if (helper.isArray(value)) {

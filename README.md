@@ -1,78 +1,29 @@
-## API
+# [JSONX](http://forchoon.com/projects/javascript/jsonx/)
 
-> *JSONX*.**build**(value)
+A pure JavaScript library which allows simple transformation between XML and
+JSON.
 
-TODO: Method description
+## JSON to XML
 
-**Parameters:**
+```
+JSONX.build(Object[]|String)
+```
 
-* *{String|Array}* **value**  
-TODO: Parameter description
+## XML to JSON
 
-**Returns:**
+```
+JSONX.parse(Node|Node[]|NodeList|String)
+```
 
-*{Node[]}* TODO: Return description
+## Stringify
 
-> *JSONX*.**parse**(value)
+```
+JSONX.stringify(Node|Node[]|NodeList|String)
+```
 
-TODO: Method description
+## Further Information
 
-**Parameters:**
+If you want more information or examples of using this library please visit the
+project's homepage;
 
-* *{String|Node|Node[]|NodeList}* **value**  
-TODO: Parameter description
-
-**Returns:**
-
-*{Array}* TODO: Return description
-
-> *JSONX*.**stringify**(value)
-
-TODO: Method description
-
-**Parameters:**
-
-* *{Array|Node|Node[]|NodeList}* **value**  
-TODO: Parameter description
-
-**Returns:**
-
-*{String}* TODO: Return description
-
-## Grammar ([BNF](http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form))
-
-    element
-      = '[' element-name ',' attributes ',' element-list ']'
-      | '[' element-name ',' attributes ']'
-      | '[' element-name ',' element-list ']'
-      | '[' element-name ']'
-      | string
-      ;
-    element-name
-      = string
-      ;
-    attributes
-      = '{' attribute-list '}'
-      | '{' '}'
-      ;
-    attribute-list
-      = attribute ',' attribute-list
-      | attribute
-      ;
-    attribute
-      = attribute-name ':' attribute-value
-      ;
-    attribute-name
-      = string
-      ;
-    attribute-value
-      = string
-      | number
-      | 'true'
-      | 'false'
-      | 'null'
-      ;
-    element-list
-      = element ',' element-list
-      | element
-      ;
+<http://forchoon.com/projects/javascript/jsonx/>
