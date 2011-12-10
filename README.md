@@ -1,7 +1,14 @@
-# [JSONX](http://forchoon.com/projects/javascript/jsonx/)
+     __                                
+    /\_\    ____   ___    ___   __  _  
+    \/\ \  /',__\ / __`\/' _ `\/\ \/'\ 
+     \ \ \/\__, `\\ \L\ \\ \/\ \/>  </ 
+     _\ \ \/\____/ \____/ \_\ \_\\_/\_\
+    /\ \_\ \/___/ \/___/ \/_/\/_///\/_/
+    \ \____/                           
+     \/___/                            
 
-A pure JavaScript library which allows simple transformation between XML and
-JSON.
+[jsonx][] is a pure JavaScript library which allows simple transformation
+between XML and JSON.
 
 ## JSON to XML
 
@@ -26,4 +33,6 @@ JSONX.stringify(Node|Node[]|NodeList|String)
 If you want more information or examples of using this library please visit the
 project's homepage;
 
-<http://forchoon.com/projects/javascript/jsonx/>
+http://neocotic.com/jsonx
+
+[jsonx]: http://neocotic.com/jsonx

@@ -1,29 +1,24 @@
 /*!
- * JSONX v1.0.0
- * http://forchoon.com/projects/javascript/jsonx/
- *
+ * jsonx v1.0.0
+ * 
  * Copyright 2011, Alasdair Mercer
- * Licensed under the GPL Version 3 license.
- *
+ * Freely distributable under the MIT license.
+ * 
+ * For all details and documentation:
+ * http://neocotic.com/jsonx
+ * 
  * Some parts are based on jQuery JavaScript Library v1.6.2
  * http://jquery.com/
- *
+ * 
  * Copyright 2011, John Resig
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
- * Copyright 2010, tz@execpc.com
- * Released under the GPL Version 3 license.
  */
-
-/*jslint
-    browser: true, sloppy: true, vars: true, forin: true, plusplus: true,
-    maxerr: 50, indent: 4
-*/
 
 /**
  * <p>Pure JavaScript library to support XML to JSON transformations and vice
  * versa.</p>
- * @author <a href="http://github.com/neocotic">Alasdair Mercer</a>
+ * @author <a href="http://neocotic.com">Alasdair Mercer</a>
  * @version 1.0.0
  * @requires JSON
  * @namespace
